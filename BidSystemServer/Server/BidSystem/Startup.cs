@@ -48,6 +48,8 @@ namespace BidSystem
             services.AddScoped<IUserDataStore, UserDataStore>();
             services.AddScoped<IAccountService, AccountService>();
             services.AddScoped<IAccountStore, AccountStore>();
+            services.AddScoped<IItemService, ItemService>();
+            services.AddScoped<IItemStore, ItemStore>();
         }
 
         // This method gets called by the runtime. Use this method to configure the HTTP request pipeline.
