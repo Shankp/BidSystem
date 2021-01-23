@@ -15,7 +15,8 @@ namespace BidSystem.Common.Interface
         int AddNewItem(BidItem item);
         BidItem GetItemByItemId(int itemId);
         List<BidItem> GetItemListBidByMe(int userId);
-        List<BidItem> FilterItemsByStatus(ItemStatus itemStatus);//pagination should be added
+        List<BidItem> FilterItemsByStatus(string itemStatus);//pagination should be added
+        List<BidItem> GetAllActiveItems();
         BidItem UpdateItemInfo(BidItem item);
         bool DeleteItem(int itemId);
     }

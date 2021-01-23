@@ -24,7 +24,13 @@ namespace BidSystem.Server
             throw new NotImplementedException();
         }
 
-        public List<BidItem> FilterItemsByStatus(ItemStatus itemStatus)
+        public List<BidItem> FilterItemsByStatus(string itemStatus)
+        {
+            var status = (int)Enum.Parse(typeof(ItemStatus), itemStatus); ;
+            return m_itemStore.FilterItemsByStatus(status).Result;
+        }
+
+        public List<BidItem> GetAllActiveItems()
         {
             throw new NotImplementedException();
         }
@@ -41,7 +47,7 @@ namespace BidSystem.Server
 
         public BidItem UpdateItemInfo(BidItem item)
         {
-            throw new NotImplementedException();
+            return m_itemStore.UpdateItem(item);
         }
     }
 }

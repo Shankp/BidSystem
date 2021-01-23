@@ -8,6 +8,8 @@ namespace BidSystem.Common.Models
     {
         NEW = 1,
         ACTIVE,
-        INACTIVE
+        SOLD,
+        UNSOLD,
+        SCHEDULED
     }
 }

@@ -20,11 +20,11 @@ namespace BidSystem.AspNet.Controllers
         }
 
         [HttpPost, Route("AddItem")]
-        public int AddNewitem([FromBody]BidItem item)
+        public ActionResult AddNewitem([FromBody]BidItem item)
         {
             try
             {
-                return m_itemService.AddNewItem(item);
+                return Ok(m_itemService.AddNewItem(item));
             }
             catch (Exception e)
             {
@@ -33,11 +33,37 @@ namespace BidSystem.AspNet.Controllers
         }
 
         [HttpGet, Route("GetItemById")]
-        public BidItem AddNewitem([FromQuery]int itemId)
+        public ActionResult GetItemById([FromQuery]int itemId)
         {
             try
             {
-                return m_itemService.GetItemByItemId(itemId);
+                return Ok(m_itemService.GetItemByItemId(itemId));
+            }
+            catch (Exception e)
+            {
+                throw;
+            }
+        }
+
+        [HttpGet, Route("GetItemListByStatus")]
+        public ActionResult FilterItemByStatus([FromQuery]string itemStatus)
+        {
+            try
+            {
+               return Ok(m_itemService.FilterItemsByStatus(itemStatus));
+            }
+            catch (Exception e)
+            {
+                throw;
+            }
+        }
+
+        [HttpPost, Route("UpdateItem")]
+        public ActionResult FilterItemByStatus([FromBody]BidItem item)
+        {
+            try
+            {
+                return Ok(m_itemService.UpdateItemInfo(item));
             }
             catch (Exception e)
             {
