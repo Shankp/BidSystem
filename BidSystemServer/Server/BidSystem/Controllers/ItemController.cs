@@ -59,7 +59,7 @@ namespace BidSystem.AspNet.Controllers
         }
 
         [HttpPost, Route("UpdateItem")]
-        public ActionResult FilterItemByStatus([FromBody]BidItem item)
+        public ActionResult UpdateItem([FromBody]BidItem item)
         {
             try
             {
@@ -70,6 +70,45 @@ namespace BidSystem.AspNet.Controllers
                 throw;
             }
         }
+
+        [HttpGet, Route("GetAllItem")]
+        public ActionResult GetAllBidItem()
+        {
+            try
+            {
+                return Ok(m_itemService.GetAllActiveItems());
+            }
+            catch (Exception e)
+            {
+                throw;
+            }
+        }
+
+        [HttpGet, Route("GetItemListBidByMe")]
+        public ActionResult GetItemListBidByMe([FromQuery]int userId)
+        {
+            try
+            {
+                return Ok(m_itemService.GetItemListBidByMe(userId));
+            }
+            catch (Exception e)
+            {
+                throw;
+            }
+        }
+        [HttpDelete, Route("Deleteitem")]
+        public ActionResult DeleteItem([FromQuery]int itemId)
+        {
+            try
+            {
+                return Ok(m_itemService.DeleteItem(itemId));
+            }
+            catch (Exception e)
+            {
+                throw;
+            }
+        }
+
 
     }
 }

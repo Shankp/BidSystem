@@ -21,7 +21,7 @@ namespace BidSystem.Server
 
         public bool DeleteItem(int itemId)
         {
-            throw new NotImplementedException();
+            return m_itemStore.DeleteItem(itemId);
         }
 
         public List<BidItem> FilterItemsByStatus(string itemStatus)
@@ -32,7 +32,7 @@ namespace BidSystem.Server
 
         public List<BidItem> GetAllActiveItems()
         {
-            throw new NotImplementedException();
+            return m_itemStore.GetAllActiveItems().Result;
         }
 
         public BidItem GetItemByItemId(int itemId)
@@ -42,7 +42,7 @@ namespace BidSystem.Server
 
         public List<BidItem> GetItemListBidByMe(int userId)
         {
-            throw new NotImplementedException();
+            return m_itemStore.GetItemListBidByMe(userId);
         }
 
         public BidItem UpdateItemInfo(BidItem item)

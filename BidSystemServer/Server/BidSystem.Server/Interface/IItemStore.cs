@@ -12,5 +12,8 @@ namespace BidSystem.Server.Interface
         Task<BidItem> GetItemByItemId(int itemId);
         Task<List<BidItem>> FilterItemsByStatus(int itemStatus);
         BidItem UpdateItem(BidItem item);
+        Task<List<BidItem>> GetAllActiveItems();
+        List<BidItem> GetItemListBidByMe(int userId);
+        bool DeleteItem(int itemId);
     }
 }

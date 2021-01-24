@@ -29,9 +29,29 @@ namespace BidSystem.Server.DB
             return itemModel.ItemId;
         }
 
+        public bool DeleteItem(int itemId)
+        {
+            var itemObj = m_context.Items.Find(itemId);
+            if (itemObj == null)
+            {
+                return false;
+                //log here
+            }
+            itemObj.IsDeleted = true;
+            m_context.Entry(itemObj).Property(x => x.IsDeleted).IsModified = true;
+            var result = m_context.SaveChanges();
+            return true;
+        }
+
         public async Task<List<BidItem>> FilterItemsByStatus(int itemStatus)
         {
             var itemList = await m_context.Items.Where(c => c.ItemStatus == itemStatus).ToListAsync();
+            return m_mapper.Map<List<BidItem>>(itemList);
+        }
+
+        public async Task<List<BidItem>> GetAllActiveItems()
+        {
+            var itemList = await m_context.Items.Where(c => c.ItemStatus == (int)ItemStatus.ACTIVE).ToListAsync();
             return m_mapper.Map<List<BidItem>>(itemList);
         }
 
@@ -40,6 +60,16 @@ namespace BidSystem.Server.DB
             var item = await m_context.Items.FindAsync(itemId);
             var itemModel = m_mapper.Map<BidItem>(item);
             return itemModel;
+        }
+
+        public List<BidItem> GetItemListBidByMe(int userId)
+        {
+            var itemList = (from bid in m_context.Bids
+                            join item in m_context.Items
+                            on bid.ItemId equals item.ItemId
+                            where bid.UserId == userId
+                            select item).ToList();
+            return m_mapper.Map<List<BidItem>>(itemList);
         }
 
         public BidItem UpdateItem(BidItem item)
