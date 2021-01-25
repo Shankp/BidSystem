@@ -1,19 +1,47 @@
 import react, { Component } from 'react';
 import { Button, Label, Input, Form } from 'reactstrap';
 import './Login.css';
+import {LoginService} from '../../Services/AuthService'
 
 export default class Register extends Component {
     constructor(props) {
         super(props);
+        this.state = {
+            email: '',
+            password: ''           
+        };
 
         this.gotoRegister = this.gotoRegister.bind(this);
+        this.login = this.login.bind(this);
 
     }
 
     gotoRegister = () => {
         this.props.history.push("/sign-up");
     }
+    handleUserName(text) {
+        this.setState({ email: text.target.value });        
+    }
+    handlePassword(text) {
+        this.setState({ password: text.target.value });        
+    }
+    login = async(e)=>{
+        e.preventDefault();
 
+        var logonParams = {
+            email: this.state.email,
+            password: this.state.password
+        }
+        console.log(logonParams)
+        try {
+            var userInfo = await LoginService(logonParams);
+            console.log(userInfo)
+            
+        } catch(error) {
+            //let errorMsg = (error.cause ? JSON.stringify(error.cause) : "Error in login request!");
+            //NotificationManager.error(`${errorMsg}`, 'Login');
+        }
+    }
     render() {
         return (
             <div className="login-page">
@@ -22,7 +50,7 @@ export default class Register extends Component {
                         <h4><span className="font-weight-bold" ></span></h4>
                         <hr />
                         <Label>User Name</Label>
-                        <Input type="text" name="userName" placeholder="UserName" onChange={(text) => { this.handleUserName(text) }} required></Input>
+                        <Input type="email" name="userName" placeholder="UserName" onChange={(text) => { this.handleUserName(text) }} required></Input>
 
                         <Label>Password</Label>
                         <Input type="password" name="password" placeholder="Password" onChange={(password) => { this.handlePassword(password) }} required />

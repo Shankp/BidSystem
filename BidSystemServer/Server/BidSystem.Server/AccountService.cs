@@ -15,10 +15,17 @@ namespace BidSystem.Server
         {
             m_accountStore = accountStore;
         }
-        public  ServiceResponse<string> Login(string username, string password)
+        public  ServiceResponse<string> Login(string email, string password)
         {
             ServiceResponse<string> response = new ServiceResponse<string>();
-            var result =  m_accountStore.Login(username, password);
+
+            if (email == null || password == null)
+            {
+                response.Success = false;
+                response.Message = "Invalid usename or password";
+                return response;
+            }
+             var result =  m_accountStore.Login(email, password);
             if (result.Result.Success)
             {
                 if (VerifyPasswordHash(password, result.Result.Data.PasswordHash, result.Result.Data.PasswordSalt))
