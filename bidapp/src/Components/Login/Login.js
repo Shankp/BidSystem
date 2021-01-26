@@ -2,13 +2,15 @@ import react, { Component } from 'react';
 import { Button, Label, Input, Form } from 'reactstrap';
 import './Login.css';
 import {LoginService} from '../../Services/AuthService'
+import Navbar from "../bar/navbar";
 
-export default class Register extends Component {
+
+export default class Login extends Component {
     constructor(props) {
         super(props);
         this.state = {
             email: '',
-            password: ''           
+            password: ''         
         };
 
         this.gotoRegister = this.gotoRegister.bind(this);
@@ -32,10 +34,13 @@ export default class Register extends Component {
             email: this.state.email,
             password: this.state.password
         }
-        console.log(logonParams)
+     
         try {
             var userInfo = await LoginService(logonParams);
-            console.log(userInfo)
+            if(userInfo!=null){
+                sessionStorage.setItem('token',userInfo.data.token);
+            }
+            console.log(userInfo.data)
             
         } catch(error) {
             //let errorMsg = (error.cause ? JSON.stringify(error.cause) : "Error in login request!");
@@ -44,7 +49,11 @@ export default class Register extends Component {
     }
     render() {
         return (
+            
             <div className="login-page">
+              <div>
+              <Navbar/>
+              </div>
                 <div className="form">
                     <Form className="login-form" onSubmit={this.login}>
                         <h4><span className="font-weight-bold" ></span></h4>

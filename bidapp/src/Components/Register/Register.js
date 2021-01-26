@@ -2,7 +2,7 @@ import react, { Component } from 'react';
 import { Col, Button, Form, FormGroup, Label, Input, FormText } from 'reactstrap';
 import './Register.css';
 import {RegisterService} from '../../Services/AuthService';
-
+import Navbar from "../bar/navbar";
 var DatePicker = require("reactstrap-date-picker");
 
 
@@ -53,8 +53,7 @@ export default class Register extends Component {
         }
         console.log(registerParams)
         try {
-            var userInfo = await RegisterService(registerParams);
-            console.log(userInfo)
+            var userInfo = await RegisterService(registerParams);         
             
         } catch(error) {
             //let errorMsg = (error.cause ? JSON.stringify(error.cause) : "Error in login request!");
@@ -65,6 +64,9 @@ export default class Register extends Component {
     render() {
         return (
             <div className="login-page">
+                 <div>
+              <Navbar/>
+              </div>
                 <Form onSubmit={this.register}>
                     <FormGroup row>
                         <Label for="email" sm={2}>Email:</Label>

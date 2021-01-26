@@ -4,11 +4,13 @@ using System.Linq;
 using System.Threading.Tasks;
 using BidSystem.Common.Interface;
 using BidSystem.Common.Models;
+using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Mvc;
 
 namespace BidSystem.AspNet.Controllers
 {
+    [Authorize]
     [Route("/")]
     [ApiController]
     public class ItemController : ControllerBase

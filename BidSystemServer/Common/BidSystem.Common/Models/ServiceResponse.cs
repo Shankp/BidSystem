@@ -11,5 +11,6 @@ namespace BidSystem.Common.Models
         public bool Success { get; set; } = true;
 
         public string Message { get; set; } = null;
+        public string Token { get; set; } = null;
     }
 }

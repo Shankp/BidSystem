@@ -45,7 +45,14 @@ namespace BidSystem.AspNet.Controllers
         {
             try
             {
-                var response =  m_accountservice.Login(user.Email, user.Password);
+                ServiceResponse<string> response = new ServiceResponse<string>();
+                if (user.Email == null || user.Password == null)
+                {
+                    response.Success = false;
+                    response.Message = "Invalid usename or password";
+                   
+                }
+                response =  m_accountservice.Login(user.Email, user.Password);
                 if (!response.Success)
                 {
                     return BadRequest(response);
