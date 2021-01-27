@@ -19,6 +19,24 @@ function fetchBaseURL() {
     console.log(baseurl)
   
     let instance = axios.create();
+
+    instance.interceptors.request.use((config) => {
+
+      // Debug Info
+      // console.log(localStorage.getItem('token'));
+      // console.log(localStorage.getItem('loggedInData'));
+      //
+  
+      var authTicket = sessionStorage.getItem('token');
+      console.log(authTicket)
+      if(authTicket != null){
+        config.headers = { 'authorization': 'Bearer '+authTicket };
+      }
+      return config
+      }, 
+      error => {
+      return Promise.reject(error)
+    });
   
     // Process the response and get return value
     

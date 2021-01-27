@@ -1,0 +1,16 @@
+.loading-container {
+    position: absolute;
+    top: 20%;
+    left: 40%;
+    text-align: center;
+    border: 1px solid #e8e8e8;
+    border-radius: 4px;
+    overflow: auto;
+    padding: 8px 24px;
+    height: 90%;   
+   
+  }
+
+.center-title{
+    text-align: center;
+}

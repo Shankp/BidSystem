@@ -5,10 +5,11 @@ import { Switch, Route, Redirect } from 'react-router-dom';
 import Login from './Components/Login/Login';
 import Register from './Components/Register/Register';
 import FrontList from './Components/Item/FrontList'
+import LogOut from './Components/Login/LogOut'
 
 function CheckLogOnStatus(){
     let token= sessionStorage.getItem('token');
-    console.log(token)
+    //console.log(token)
     if(token)
     {
         return true;
@@ -34,9 +35,10 @@ const Routes = () => {
     return (
         <BrowserRouter>
             <Switch>
-                <Route exact path="/Login"><Login /></Route>
+                <Route exact path="/Login"><Login /></Route>               
                 <Route path='/Register' component={Register} />                              
-                <PrivateRoute path='/' component={FrontList} />
+                <Route path='/' component={FrontList} />
+                <PrivateRoute path='/LoggedUserList' component={FrontList} />
               
             </Switch>
         </BrowserRouter>

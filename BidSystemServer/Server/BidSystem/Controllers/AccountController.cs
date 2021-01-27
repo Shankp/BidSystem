@@ -4,11 +4,13 @@ using System.Linq;
 using System.Threading.Tasks;
 using BidSystem.Common.Interface;
 using BidSystem.Common.Models;
+using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Mvc;
 
 namespace BidSystem.AspNet.Controllers
 {
+    
     [Route("/")]
     [ApiController]
     public class AccountController : ControllerBase
@@ -66,6 +68,7 @@ namespace BidSystem.AspNet.Controllers
 
         }
 
+        [Authorize]
         [HttpGet, Route("GetUserType")]
         public ActionResult GetUserRoles()
         {
@@ -73,6 +76,21 @@ namespace BidSystem.AspNet.Controllers
             {
                 var userTypeList = m_userDataServices.GetUsetTypes();
                 return Ok(userTypeList);
+            }
+            catch (Exception e)
+            {
+                throw;
+            }
+
+        }
+
+        [Authorize]
+        [HttpGet, Route("UserValidate")]
+        public ActionResult CheckUserIsValid()
+        {
+            try
+            {                
+                return Ok(true);
             }
             catch (Exception e)
             {

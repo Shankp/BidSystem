@@ -53,7 +53,13 @@ export default class Register extends Component {
         }
         console.log(registerParams)
         try {
-            var userInfo = await RegisterService(registerParams);         
+            var userInfo = await RegisterService(registerParams);
+            if (userInfo != null) {   
+                this.props.history.push({
+                    pathname: '/Login',
+                    state: { isLoggedin: true }
+                  });               
+            }         
             
         } catch(error) {
             //let errorMsg = (error.cause ? JSON.stringify(error.cause) : "Error in login request!");
