@@ -42,7 +42,7 @@ namespace BidSystem
             services.AddAuthentication(JwtBearerDefaults.AuthenticationScheme)
                     .AddJwtBearer(options =>
                     {
-                        options.TokenValidationParameters = new Microsoft.IdentityModel.Tokens.TokenValidationParameters
+                        options.TokenValidationParameters = new TokenValidationParameters
                         {
                             ValidateIssuerSigningKey = true,
                             IssuerSigningKey = new SymmetricSecurityKey(Encoding.ASCII.GetBytes(Configuration.GetSection("AppSettings:Token").Value)),
@@ -64,6 +64,8 @@ namespace BidSystem
             services.AddScoped<IAccountStore, AccountStore>();
             services.AddScoped<IItemService, ItemService>();
             services.AddScoped<IItemStore, ItemStore>();
+            services.AddScoped<IBidService, BidService>();
+            services.AddScoped<IBidStore, BidStore>();
         }
 
         // This method gets called by the runtime. Use this method to configure the HTTP request pipeline.

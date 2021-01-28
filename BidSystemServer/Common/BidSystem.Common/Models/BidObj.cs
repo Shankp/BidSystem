@@ -1,18 +1,15 @@
 ﻿using System;
 using System.Collections.Generic;
+using System.Text;
 
-#nullable disable
-
-namespace BidSystem.Server.DB.DBModels
+namespace BidSystem.Common.Models
 {
-    public partial class Bid
+    public class BidObj
     {
         public int BidId { get; set; }
         public int ItemId { get; set; }
         public int UserId { get; set; }
+        public DateTime ExpireTime { get; set; }
         public int BidValue { get; set; }
-
-        public virtual Item Item { get; set; }
-        public virtual BidUser User { get; set; }
     }
 }

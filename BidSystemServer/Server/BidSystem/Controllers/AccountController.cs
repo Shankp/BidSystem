@@ -69,13 +69,30 @@ namespace BidSystem.AspNet.Controllers
         }
 
         [Authorize]
-        [HttpGet, Route("GetUserType")]
-        public ActionResult GetUserRoles()
+        [HttpGet, Route("GetAllUserTypes")]
+        public ActionResult GetUserTypeList()
         {
             try
             {
                 var userTypeList = m_userDataServices.GetUsetTypes();
                 return Ok(userTypeList);
+            }
+            catch (Exception e)
+            {
+                throw;
+            }
+
+        }
+
+        [Authorize]
+        [HttpGet, Route("GetUserType")]
+        public ActionResult GetUserTypeForToken()
+        {
+            try
+            {
+                var authToken = HttpContext.Request.Headers["Authorization"];
+                var userType = m_userDataServices.GetUserTypeByid(authToken);
+                return Ok(userType);
             }
             catch (Exception e)
             {

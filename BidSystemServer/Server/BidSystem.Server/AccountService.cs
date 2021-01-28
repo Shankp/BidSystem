@@ -64,9 +64,10 @@ namespace BidSystem.Server
 
         private string CreateToken(User user)
         {
+            //TODO:implement user data in one table to retrieve all at once
             List<Claim> claims = new List<Claim>{
-                    new Claim(ClaimTypes.NameIdentifier, user.UserId.ToString()),
-                    new Claim(ClaimTypes.Name, user.Email)};
+                    new Claim(ClaimTypes.NameIdentifier, user.Email),
+                    new Claim(ClaimTypes.Name, user.UserName)};
 
             SymmetricSecurityKey key = new SymmetricSecurityKey(Encoding.UTF8.GetBytes(m_configuration.GetSection("AppSettings:Token").Value));
             SigningCredentials creds = new SigningCredentials(key, SecurityAlgorithms.HmacSha512Signature);

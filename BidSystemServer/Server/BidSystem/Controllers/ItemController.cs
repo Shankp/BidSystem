@@ -10,7 +10,6 @@ using Microsoft.AspNetCore.Mvc;
 
 namespace BidSystem.AspNet.Controllers
 {
-    [Authorize]
     [Route("/")]
     [ApiController]
     public class ItemController : ControllerBase
@@ -21,6 +20,7 @@ namespace BidSystem.AspNet.Controllers
             m_itemService = itemService;
         }
 
+        [Authorize]
         [HttpPost, Route("AddItem")]
         public ActionResult AddNewitem([FromBody]BidItem item)
         {
@@ -34,6 +34,7 @@ namespace BidSystem.AspNet.Controllers
             }
         }
 
+        [Authorize]
         [HttpGet, Route("GetItemById")]
         public ActionResult GetItemById([FromQuery]int itemId)
         {
@@ -47,6 +48,7 @@ namespace BidSystem.AspNet.Controllers
             }
         }
 
+        [Authorize]
         [HttpGet, Route("GetItemListByStatus")]
         public ActionResult FilterItemByStatus([FromQuery]string itemStatus)
         {
@@ -60,6 +62,7 @@ namespace BidSystem.AspNet.Controllers
             }
         }
 
+        [Authorize]
         [HttpPost, Route("UpdateItem")]
         public ActionResult UpdateItem([FromBody]BidItem item)
         {
@@ -72,6 +75,7 @@ namespace BidSystem.AspNet.Controllers
                 throw;
             }
         }
+
 
         [HttpGet, Route("GetAllItem")]
         public ActionResult GetAllBidItem()
@@ -98,6 +102,8 @@ namespace BidSystem.AspNet.Controllers
                 throw;
             }
         }
+
+        [Authorize]
         [HttpDelete, Route("Deleteitem")]
         public ActionResult DeleteItem([FromQuery]int itemId)
         {

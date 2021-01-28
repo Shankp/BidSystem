@@ -21,7 +21,8 @@ export async function RegisterService(template) {
   return api.post(endpoint, {
     Email: template.email,
     Password: template.password,
-    UserType: "2"
+    UserType: "2",
+    UserName: template.name
   });
 }
 
