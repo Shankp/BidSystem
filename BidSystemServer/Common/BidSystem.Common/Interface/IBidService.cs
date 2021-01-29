@@ -10,5 +10,6 @@ namespace BidSystem.Common.Interface
         ServiceResponse<int> AddNewBid(BidObj bid, string token);
 
         bool CheckBidExist(int itemId, int userId);
+        
     }
 }

@@ -10,6 +10,7 @@ using BidSystem.Server.DB;
 using BidSystem.Server.DB.DBModels;
 using BidSystem.Server.DB.DBModels;
 using BidSystem.Server.Interface;
+using BidSystem.Server.Schedular;
 using Microsoft.AspNetCore.Authentication.JwtBearer;
 using Microsoft.AspNetCore.Builder;
 using Microsoft.AspNetCore.Hosting;
@@ -66,6 +67,9 @@ namespace BidSystem
             services.AddScoped<IItemStore, ItemStore>();
             services.AddScoped<IBidService, BidService>();
             services.AddScoped<IBidStore, BidStore>();
+            services.AddScoped<ISchedularService, SchedularService>();
+
+            services.AddHostedService<SchedularHosteredService>();
         }
 
         // This method gets called by the runtime. Use this method to configure the HTTP request pipeline.
