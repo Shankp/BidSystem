@@ -9,7 +9,7 @@ import { List, message, Avatar, Spin } from 'antd';
 import InfiniteScroll from 'react-infinite-scroller';
 
 import { GetAllActiveItems } from '../../Services/ItemService'
-import { UserValidate } from '../../Services/AuthService'
+import { UserValidate, GetUserType } from '../../Services/AuthService'
 import { AddNewbid } from '../../Services/BidService'
 import { Container } from '@material-ui/core';
 import { NotificationManager } from 'react-notifications';
@@ -28,15 +28,18 @@ export default class FrontList extends Component {
             hasMore: true,
             isUserLogged: false,
             bidValue: 0,
-            show:true
+            show: true,
+            userType: null
 
         }
         this.isLoggedOnUser = this.isLoggedOnUser.bind(this);
+        this.getUserType = this.getUserType.bind(this);
         this.getAllItems();
     }
 
     async componentDidMount() {
         await this.isLoggedOnUser();
+        await this.getUserType();
     }
 
     isLoggedOnUser = async () => {
@@ -77,13 +80,18 @@ export default class FrontList extends Component {
         }
     }
 
+    getUserType = async () => {
+        var userType = await GetUserType();
+        this.setState({ userType: userType.data });
+    }
+
     handleBidVlaue(text) {
         this.setState({ bidValue: text.target.value });
         console.log(text.target.value);
     }
 
     render() {
-      
+
         // const isLoggedIn = this.state.isUserLogged;
         // console.log(isLoggedIn)
         // let button;
@@ -122,15 +130,21 @@ export default class FrontList extends Component {
                                     {/* <div>{button} </div> */}
                                     <div>{this.state.isUserLogged ?
                                         <div>
-                                            <button onClick={() => this.addNewBid(item.itemId, item.itemTitle)} >Add bid</button>
-                                            <input type="number" name="bidValue" onChange={(text) => this.handleBidVlaue(text)} />
+                                            {this.state.userType == 2 && this.state.userType!= null?
+                                                <div>
+                                                    <button onClick={() => this.addNewBid(item.itemId, item.itemTitle)} >Add bid</button>
+                                                    <input type="number" name="bidValue" onChange={(text) => this.handleBidVlaue(text)} /> </div> :
+                                                <div></div>
+                                            }
+                                            {/* <button onClick={() => this.addNewBid(item.itemId, item.itemTitle)} >Add bid</button>
+                                            <input type="number" name="bidValue" onChange={(text) => this.handleBidVlaue(text)} /> */}
                                             {/* <Toast  show={this.state.show} delay={100} autohide>
                                                 <ToastHeader>
                                                     Reactstrap
-          </ToastHeader>
+                                                   </ToastHeader>
                                                 <ToastBody>
                                                     This is a toast on a white background — check it out!
-          </ToastBody>
+                                                      </ToastBody>
                                             </Toast> */}
                                         </div>
                                         : <div></div>}</div>

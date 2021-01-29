@@ -31,3 +31,9 @@ export async function UserValidate() {
   let api = await API();
   return api.get(endpoint);
 }
+
+export async function GetUserType() {
+  const endpoint = `GetUserType`;
+  let api = await API();
+  return api.get(endpoint);
+}

@@ -57,7 +57,7 @@ export default class Register extends Component {
             if (userInfo != null) {   
                 this.props.history.push({
                     pathname: '/Login',
-                    state: { isLoggedin: true }
+                    state: { isLoggedin: false }
                   });               
             }         
             

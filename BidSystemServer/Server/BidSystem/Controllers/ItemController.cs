@@ -76,9 +76,8 @@ namespace BidSystem.AspNet.Controllers
             }
         }
 
-
-        [HttpGet, Route("GetAllItem")]
-        public ActionResult GetAllBidItem()
+        [HttpGet, Route("GetAllActiveItems")]
+        public ActionResult GetAllActiveBidItem()
         {
             try
             {
