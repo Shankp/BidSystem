@@ -8,7 +8,7 @@ import ListSubheader from '@material-ui/core/ListSubheader';
 import { List, message, Avatar, Spin } from 'antd';
 import InfiniteScroll from 'react-infinite-scroller';
 
-import { GetAllActiveItems } from '../../Services/ItemService'
+import { GetAllActiveItems, GetItemsByStatus } from '../../Services/ItemService'
 import { UserValidate, GetUserType } from '../../Services/AuthService'
 import { AddNewbid } from '../../Services/BidService'
 import { Container } from '@material-ui/core';
@@ -16,7 +16,7 @@ import { NotificationManager } from 'react-notifications';
 import './FrontList.css';
 import 'react-notifications/lib/notifications.css';
 import { Button, Label, Input, Form, Toast, ToastBody, ToastHeader } from 'reactstrap';
-
+import itemStatus from "./../../models/ItemStatusType";
 
 export default class FrontList extends Component {
     constructor(props) {
@@ -34,8 +34,9 @@ export default class FrontList extends Component {
         }
         this.isLoggedOnUser = this.isLoggedOnUser.bind(this);
         this.getUserType = this.getUserType.bind(this);
-        this.getAllItems();
+        //this.getAllItems();
     }
+
 
     componentDidUpdate() {
         //this.getAllItems();
@@ -44,17 +45,36 @@ export default class FrontList extends Component {
     async componentDidMount() {
         await this.isLoggedOnUser();
         await this.getUserType();
+        await this.getAllItems();
     }
 
     isLoggedOnUser = async () => {
-        var isUserLogged = await UserValidate();
-        this.setState({ isUserLogged: isUserLogged });
-        console.log(isUserLogged)
+        try {
+            var isUserLogged = await UserValidate();
+            this.setState({ isUserLogged: isUserLogged });
+        } catch (error) {
+
+        }
     }
 
     getAllItems = async () => {
         try {
-            var itemList = await GetAllActiveItems();
+            //var statusList = itemStatus.NEW  + "," +  itemStatus.ACTIVE ;
+            console.log(this.state.userType)
+            let itemList;
+            if (this.state.userType == 1) {
+                var statusList = itemStatus.NEW + "," + itemStatus.ACTIVE;
+                itemList = await GetItemsByStatus(statusList);
+            }
+            else if (this.state.userType == 2) {
+                var statusList = itemStatus.NEW;
+                itemList = await GetItemsByStatus(statusList);
+            }else{
+                itemList = await GetAllActiveItems();
+            }
+
+            //var itemList = await GetItemsByStatus(statusList);
+           
             this.setState({ data: itemList.data, loading: true });
             console.log(this.state.data);
 
@@ -85,13 +105,18 @@ export default class FrontList extends Component {
     }
 
     getUserType = async () => {
-        var userType = await GetUserType();
-        this.setState({ userType: userType.data });
+        try {
+            var userType = await GetUserType();
+            this.setState({ userType: userType.data });
+        } catch (error) {
+            if (error.statuscode === 401) {
+                console.log("user not logged in.");
+            }
+        }
     }
 
     handleBidVlaue(text) {
         this.setState({ bidValue: text.target.value });
-        console.log(text.target.value);
     }
 
     render() {
@@ -104,6 +129,7 @@ export default class FrontList extends Component {
         // }
         return (
             <div >
+
                 <div>
                     <Navbar />
                 </div>
@@ -139,6 +165,8 @@ export default class FrontList extends Component {
                                             //avatar={ <Avatar src="https://zos.alipayobjects.com/rmsportal/ODTLcjxAfvqbxHnVXCYX.png" shape="square" size={10}/>}
                                             />
                                             <div>{item.itemDescription}</div>
+                                            {/* <div>Bidding status : {itemStatus[item.itemStatus]} </div> */}
+                                            <div>Bidding status : {item.itemStatus} </div>
                                             {/* <div>{button} </div> */}
                                             <div>{this.state.isUserLogged ?
                                                 <div>

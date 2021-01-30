@@ -6,6 +6,18 @@ export async function GetAllActiveItems() {
   return api.get(endpoint);
 }
 
+export async function GetItemsByStatus(statusList) {
+  let config = {
+    headers: {},
+    params: {
+      itemStatus: statusList       
+    },
+};
+  const endpoint = `GetItemListByStatus`;
+  let api = await API();
+  return api.get(endpoint, config);
+}
+
 export async function AddItemService(template) {
   const endpoint = `AddItem`;
   let params = {
@@ -13,7 +25,7 @@ export async function AddItemService(template) {
     ItemSubTitle: template.subTitle,
     ItemDescription: template.moreDetails,
     ItemStatus: template.itemStatus,
-    ExpireTime: template.expireTime,  
+    ExpireTime: template.expireTime,
     StartingBid: template.startingBid
   };
   console.log(template);

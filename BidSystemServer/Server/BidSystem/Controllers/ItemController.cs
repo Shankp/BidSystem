@@ -54,11 +54,16 @@ namespace BidSystem.AspNet.Controllers
         {
             try
             {
-               return Ok(m_itemService.FilterItemsByStatus(itemStatus));
+                if (!string.IsNullOrEmpty(itemStatus))
+                {
+                    return Ok(m_itemService.FilterItemsByStatus(itemStatus));
+                }
+                return BadRequest("Empty or null received as status param");
+
             }
             catch (Exception e)
             {
-                throw;
+                return StatusCode(500, "Something went wrong when logging");
             }
         }
 
