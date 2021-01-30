@@ -83,7 +83,7 @@ export default class Register extends Component {
                     <FormGroup row>
                         <Label for="password" sm={3}>Password:</Label>
                         <Col sm={9}>
-                            <Input type="password" name="password" id="password" placeholder="password placeholder" onChange={(text) => { this.handlePassword(text) }} required/>
+                            <Input type="password" name="password" id="password" placeholder="Enter password" onChange={(text) => { this.handlePassword(text) }} required/>
                         </Col>
                     </FormGroup>
                     <FormGroup row>
@@ -95,7 +95,7 @@ export default class Register extends Component {
                     <FormGroup row>
                         <Label for="dob" sm={2}>DOB</Label>
                         <Col sm={10}>
-                            <DatePicker dateFormat="MM/DD/YYYY" onChange={(date) => { this.handleDOB(date) }} />
+                            <DatePicker dateFormat="MM/DD/YYYY" value ={this.state.dob} onChange={(date) => { this.handleDOB(date) }} />
                         </Col>
                     </FormGroup>
                     <FormGroup row>

@@ -20,21 +20,28 @@ namespace BidSystem.Server.DB
         }
         public List<BidObj> GetWinningBids()
         {
-            var vsfg = ((from s in m_context.Bids
-                       join d in m_context.Items
-                       on s.ItemId equals d.ItemId
-                       where d.ExpireTime <= DateTime.Now
-                       select new BidObj
-                       {
-                           BidId=s.BidId,
-                           BidValue=s.BidValue,
-                           ItemId=s.ItemId,
-                           UserId=s.UserId
-                       }).ToList());
+            var winingBidList = new List<BidObj>();
+            var resultSet = (((from s in m_context.Bids
+                         join d in m_context.Items
+                         on s.ItemId equals d.ItemId
+                         where d.ExpireTime <= DateTime.Now
+                         select new BidObj
+                         {
+                             BidId = s.BidId,
+                             BidValue = s.BidValue,
+                             ItemId = s.ItemId,
+                             UserId = s.UserId
+                         }).ToList()).GroupBy(c => c.ItemId)).ToList(); ;
 
 
+            foreach(var grp in resultSet)
+            {
+                int max = grp.Max(i => i.BidValue);
+                var item = grp.First(x => x.BidValue == max);
+                winingBidList.Add(item);
+            }
 
-            throw new NotImplementedException();
+            return winingBidList;
         }
     }
 }

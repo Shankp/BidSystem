@@ -37,6 +37,10 @@ export default class FrontList extends Component {
         this.getAllItems();
     }
 
+    componentDidUpdate() {
+        //this.getAllItems();
+    }
+
     async componentDidMount() {
         await this.isLoggedOnUser();
         await this.getUserType();
@@ -51,8 +55,8 @@ export default class FrontList extends Component {
     getAllItems = async () => {
         try {
             var itemList = await GetAllActiveItems();
-            console.log(itemList.data);
             this.setState({ data: itemList.data, loading: true });
+            console.log(this.state.data);
 
         } catch (error) {
 
@@ -103,66 +107,77 @@ export default class FrontList extends Component {
                 <div>
                     <Navbar />
                 </div>
-                <div className="center-title"> <h3 >Item list</h3></div>
 
-                <div className="loading-container">
-                    <InfiniteScroll
-                        initialLoad={false}
-                        pageStart={0}
-                        loadMore={this.getAllItems}
-                        hasMore={!this.state.loading && this.state.hasMore}
-                        useWindow={false}
-                    >
-                        <List
-                            dataSource={this.state.data}
-                            itemLayout="vertical"
-                            renderItem={item => (
-                                <List.Item key={item.itemId}>
-                                    <List.Item.Meta
-                                        title={<a href="https://ant.design">{item.itemTitle}</a>}
-                                        description={item.itemSubTitle}
-                                    // avatar={<Avatar src={item} shape="square" size={48} />}
-                                    //avatar={ <Avatar src="https://zos.alipayobjects.com/rmsportal/ODTLcjxAfvqbxHnVXCYX.png" shape="square" size={10}/>}
+                {this.state.data == null || this.state.data.length == 0
+                    ?
+                    <div className="center-title">
+                        <h3>Oops. No Items to bid  :-( </h3>
+                    </div>
+                    :
+                    <div>
+                        <div className="center-title">
+                            <h3 >Item list</h3>
+                        </div>
 
-                                    />
-
-                                    <div>{item.itemDescription}</div>
-                                    {/* <div>{button} </div> */}
-                                    <div>{this.state.isUserLogged ?
-                                        <div>
-                                            {this.state.userType == 2 && this.state.userType!= null?
+                        <div className="loading-container">
+                            <InfiniteScroll
+                                initialLoad={false}
+                                pageStart={0}
+                                loadMore={this.getAllItems}
+                                hasMore={!this.state.loading && this.state.hasMore}
+                                useWindow={false}
+                            >
+                                <List
+                                    dataSource={this.state.data}
+                                    itemLayout="vertical"
+                                    renderItem={item => (
+                                        <List.Item key={item.itemId}>
+                                            <List.Item.Meta
+                                                title={item.itemTitle}
+                                                description={item.itemSubTitle}
+                                            // avatar={<Avatar src={item} shape="square" size={48} />}
+                                            //avatar={ <Avatar src="https://zos.alipayobjects.com/rmsportal/ODTLcjxAfvqbxHnVXCYX.png" shape="square" size={10}/>}
+                                            />
+                                            <div>{item.itemDescription}</div>
+                                            {/* <div>{button} </div> */}
+                                            <div>{this.state.isUserLogged ?
                                                 <div>
-                                                    <button onClick={() => this.addNewBid(item.itemId, item.itemTitle)} >Add bid</button>
-                                                    <input type="number" name="bidValue" onChange={(text) => this.handleBidVlaue(text)} /> </div> :
-                                                <div></div>
+                                                    {this.state.userType == 2 && this.state.userType != null ?
+                                                        <div>
+                                                            <button onClick={() => this.addNewBid(item.itemId, item.itemTitle)} >Add bid</button>
+                                                            <input type="number" name="bidValue" onChange={(text) => this.handleBidVlaue(text)} /> </div> :
+                                                        <div></div>
+                                                    }
+                                                    {/* <button onClick={() => this.addNewBid(item.itemId, item.itemTitle)} >Add bid</button>
+                                        <input type="number" name="bidValue" onChange={(text) => this.handleBidVlaue(text)} /> */}
+                                                    {/* <Toast  show={this.state.show} delay={100} autohide>
+                                            <ToastHeader>
+                                                Reactstrap
+                                               </ToastHeader>
+                                            <ToastBody>
+                                                This is a toast on a white background — check it out!
+                                                  </ToastBody>
+                                        </Toast> */}
+                                                </div>
+                                                : <div>
+                                                </div>
                                             }
-                                            {/* <button onClick={() => this.addNewBid(item.itemId, item.itemTitle)} >Add bid</button>
-                                            <input type="number" name="bidValue" onChange={(text) => this.handleBidVlaue(text)} /> */}
-                                            {/* <Toast  show={this.state.show} delay={100} autohide>
-                                                <ToastHeader>
-                                                    Reactstrap
-                                                   </ToastHeader>
-                                                <ToastBody>
-                                                    This is a toast on a white background — check it out!
-                                                      </ToastBody>
-                                            </Toast> */}
+                                            </div>
+
+                                        </List.Item>
+                                    )}
+                                >
+                                    {this.state.loading && this.state.hasMore && (
+                                        <div className="demo-loading-container">
+                                            <Spin />
                                         </div>
-                                        : <div></div>}</div>
+                                    )}
+                                </List>
+                            </InfiniteScroll>
+                        </div>
+                    </div>
+                }
 
-
-
-                                </List.Item>
-                            )}
-                        >
-                            {this.state.loading && this.state.hasMore && (
-                                <div className="demo-loading-container">
-                                    <Spin />
-                                </div>
-                            )}
-                        </List>
-                    </InfiniteScroll>
-
-                </div>
             </div>
         );
     }

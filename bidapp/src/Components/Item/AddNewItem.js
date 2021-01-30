@@ -33,23 +33,20 @@ export class AddNewItem extends Component {
 
     }
     handleTitle(text) {
-        this.setState({ title: text.target.value });
-        console.log(text.target.value);
+        this.setState({ title: text.target.value });       
     }
     handleSubTitle(text) {
-        this.setState({ subTitle: text.target.value });
-        console.log(text.target.value);
+        this.setState({ subTitle: text.target.value });       
     }
     handleInfo(text) {
-        this.setState({ MoreDetails: text.target.value });
-        console.log(text.target.value);
+        this.setState({ moreDetails: text.target.value });       
     }
-    handleExpireDate(date) {
-        console.log(date);
+    handleExpireDate(date) {        
         this.setState({ expireTime: date });
     }
     handleStartingBid(text) {
         this.setState({ startingBid: text.target.value });
+        console.log(text.target.value);
     }
 
     saveItem = async (e) => {
@@ -58,8 +55,8 @@ export class AddNewItem extends Component {
         var itemParams = {
             title: this.state.title,
             subTitle: this.state.subTitle,
-            MoreDetails: this.state.MoreDetails,
-            ExpireTime: this.state.ExpireTime,
+            moreDetails: this.state.moreDetails,
+            expireTime: this.state.expireTime,
             startingBid: this.state.startingBid,
             itemStatus: 1
         }
@@ -84,7 +81,7 @@ export class AddNewItem extends Component {
     render() {
         return (
             <Modal isOpen={this.state.modal} toggle={this.toggle}>
-                <ModalHeader closeButton>New Bid Item</ModalHeader>
+                <ModalHeader>New Bid Item</ModalHeader>
                 <ModalBody>
                     <div className="form-page">
                         {/* <div>
@@ -92,31 +89,31 @@ export class AddNewItem extends Component {
                 </div> */}
                         <Form onSubmit={this.saveItem}>
                             <FormGroup row>
-                                <Label for="email" sm={2}>Title:</Label>
+                                <Label for="title" sm={2}>Title:</Label>
                                 <Col sm={10}>
                                     <Input type="text" name="title" id="title" placeholder="Enter Item name" onChange={(text) => { this.handleTitle(text) }} required />
                                 </Col>
                             </FormGroup>
                             <FormGroup row>
-                                <Label for="password" sm={3}>Subtitle:</Label>
+                                <Label for="subtitle" sm={3}>Subtitle:</Label>
                                 <Col sm={9}>
                                     <Input type="text" name="subtitle" id="subtitle" placeholder="Enter Item sub name" onChange={(text) => { this.handleSubTitle(text) }} required />
                                 </Col>
                             </FormGroup>
                             <FormGroup row>
-                                <Label for="name" sm={2}>More Information:</Label>
+                                <Label for="info" sm={2}>More Information:</Label>
                                 <Col sm={10}>
                                     <Input type="text" name="info" id="info" placeholder="Enter more info..." onChange={(text) => { this.handleInfo(text) }} required />
                                 </Col>
                             </FormGroup>
                             <FormGroup row>
-                                <Label for="dob" sm={2}>Expiration date:</Label>
+                                <Label for="ExDate" sm={2}>Expiration Date:</Label>
                                 <Col sm={10}>
-                                    <DatePicker dateFormat="MM/DD/YYYY" onChange={(date) => { this.handleExpireDate(date) }} />
+                                    <DatePicker dateFormat="MM/DD/YYYY" value = {this.state.expireTime} onChange={(date) => { this.handleExpireDate(date) }} />
                                 </Col>
                             </FormGroup>
                             <FormGroup row>
-                                <Label for="starting Bid" sm={2}>Address:</Label>
+                                <Label for="starting Bid" sm={2}>Starting Bid:</Label>
                                 <Col sm={10}>
                                     <Input type="number" name="startingBid" id="startingBid" onChange={(text) => { this.handleStartingBid(text) }} />
                                 </Col>

@@ -49,9 +49,7 @@ class Navbar extends Component {
     history.go("/");
   }
 
-  goToAddItem = () => {
-    console.log('click add item button')
-    //this.props.history.push('/AddItem');
+  goToAddItem = () => {   
     this.setState({ addItemModalShow: true })
     console.log(this.state.addItemModalShow)
   }

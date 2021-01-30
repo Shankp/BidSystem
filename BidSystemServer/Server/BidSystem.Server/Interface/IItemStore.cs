@@ -10,7 +10,7 @@ namespace BidSystem.Server.Interface
     {
         Task<int> AddNewItem(BidItem item);
         Task<BidItem> GetItemByItemId(int itemId);
-        Task<List<BidItem>> FilterItemsByStatus(int itemStatus);
+        Task<List<BidItem>> FilterItemsByStatus(string[] itemStatus);
         BidItem UpdateItem(BidItem item);
         Task<List<BidItem>> GetAllActiveItems();
         List<BidItem> GetItemListBidByMe(int userId);

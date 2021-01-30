@@ -11,11 +11,12 @@ export async function AddItemService(template) {
   let params = {
     ItemTitle: template.title,
     ItemSubTitle: template.subTitle,
-    ItemDescription: template.MoreDetails,
+    ItemDescription: template.moreDetails,
     ItemStatus: template.itemStatus,
-    ExpireTime: template.ExpireTime
-    //startingBid: template.startingBid
+    ExpireTime: template.expireTime,  
+    StartingBid: template.startingBid
   };
+  console.log(template);
   let api = await API();
   return api.post(endpoint, params);
 }

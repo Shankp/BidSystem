@@ -13,7 +13,7 @@ namespace BidSystem.Common.Models
         public string ImagePath { get; set; }
         public int ItemStatus { get; set; }
         public DateTime? ExpireTime { get; set; }
-        public int? MaxBidValue { get; set; }
+        public int StartingBid { get; set; }
         public bool? IsDeleted { get; set; }
     }
 }
