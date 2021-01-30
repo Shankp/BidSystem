@@ -9,14 +9,13 @@ function fetchBaseURL() {
   }
 
   export async function API() {
-    console.log('test')
+  
     if(axios.defaults.instance) {
        return axios.defaults.instance;
     }
     console.log(process.env.PUBLIC_URL)
     let baseurl = await fetchBaseURL();
-    axios.defaults.baseURL = baseurl;
-    console.log(baseurl)
+    axios.defaults.baseURL = baseurl;    
   
     let instance = axios.create();
 
@@ -28,10 +27,11 @@ function fetchBaseURL() {
       //
   
       var authTicket = sessionStorage.getItem('token');
-      console.log(authTicket)
+      
       if(authTicket != null){
         config.headers = { 'authorization': 'Bearer '+authTicket };
       }
+     // config.headers = { 'Content-Type': 'application/json; charset=utf8' };
       return config
       }, 
       error => {

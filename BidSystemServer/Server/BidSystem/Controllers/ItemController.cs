@@ -1,12 +1,11 @@
 ﻿using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Threading.Tasks;
+using System.IO;
 using BidSystem.Common.Interface;
 using BidSystem.Common.Models;
 using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Mvc;
+
 
 namespace BidSystem.AspNet.Controllers
 {
@@ -121,6 +120,28 @@ namespace BidSystem.AspNet.Controllers
             }
         }
 
+        [Authorize]
+        [HttpPost, Route("UploadItem")]
+        public ActionResult Post([FromForm] FileModel file)
+        {
+            try
+            {
+                //var postedFile = Request.Form.Files[0];
+                string path = Path.Combine(Directory.GetCurrentDirectory(), "wwwroot", file.FileName);
 
+                using (Stream stream = new FileStream(path, FileMode.Create))
+                {
+                    //file.FormFile.CopyTo(stream);
+                }
+
+                return StatusCode(StatusCodes.Status201Created);
+            }
+            catch (Exception e)
+            {
+                return StatusCode(StatusCodes.Status500InternalServerError);
+            }
+        }
     }
+
+
 }

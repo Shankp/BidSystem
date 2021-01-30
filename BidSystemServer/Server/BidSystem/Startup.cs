@@ -22,6 +22,7 @@ using Microsoft.Extensions.DependencyInjection;
 using Microsoft.Extensions.Hosting;
 using Microsoft.Extensions.Logging;
 using Microsoft.IdentityModel.Tokens;
+using Microsoft.Net.Http.Headers;
 
 namespace BidSystem
 {
@@ -59,6 +60,16 @@ namespace BidSystem
             IMapper mapper = mappingConfig.CreateMapper();
             services.AddSingleton(mapper);
 
+            services.AddCors(options =>
+            {
+                options.AddPolicy("Policy1", builder =>
+                 {
+                     builder.WithOrigins("http://localhost:3000")
+                      .WithMethods("GET", "POST", "PUT", "DELETE")
+                      .WithHeaders(HeaderNames.ContentType, "authorization");
+                 });
+            });
+
             services.AddScoped<IUserDataServices, UserDataServices>();
             services.AddScoped<IUserDataStore, UserDataStore>();
             services.AddScoped<IAccountService, AccountService>();
@@ -79,6 +90,7 @@ namespace BidSystem
             {
                 app.UseDeveloperExceptionPage();
             }
+            app.UseCors("Policy1");
 
             app.UseHttpsRedirection();
 

@@ -29,18 +29,25 @@ class Navbar extends Component {
   }
 
   isLoggedOnUser = async () => {
-    var isUserLogged = await UserValidate();
-    console.log(isUserLogged)
-    if (isUserLogged != null) {
-      this.setState({ isLoggedin: isUserLogged });
-    }
+    try {
+      var isUserLogged = await UserValidate();
+      console.log(isUserLogged)
+      if (isUserLogged != null) {
+        this.setState({ isLoggedin: isUserLogged });
+      }
+    } catch (error) {
 
+    }
   }
 
   getUserType = async () => {
-    var userType = await GetUserType();
-    this.setState({ userType: userType.data })
-    console.log(userType.data)
+    try {
+      var userType = await GetUserType();
+      this.setState({ userType: userType.data })
+      console.log(userType.data)
+    } catch (error) {
+
+    }
   }
 
   logout = () => {
@@ -49,7 +56,7 @@ class Navbar extends Component {
     history.go("/");
   }
 
-  goToAddItem = () => {   
+  goToAddItem = () => {
     this.setState({ addItemModalShow: true })
     console.log(this.state.addItemModalShow)
   }

@@ -17,6 +17,7 @@ import './FrontList.css';
 import 'react-notifications/lib/notifications.css';
 import { Button, Label, Input, Form, Toast, ToastBody, ToastHeader } from 'reactstrap';
 import itemStatus from "./../../models/ItemStatusType";
+import Divider from '@material-ui/core/Divider';
 
 export default class FrontList extends Component {
     constructor(props) {
@@ -154,13 +155,15 @@ export default class FrontList extends Component {
                                 useWindow={false}
                             >
                                 <List
+                                
                                     dataSource={this.state.data}
                                     itemLayout="vertical"
                                     renderItem={item => (
                                         <List.Item key={item.itemId}>
                                             <List.Item.Meta
                                                 title={item.itemTitle}
-                                                description={item.itemSubTitle}
+                                                description={item.itemSubTitle}                                               
+                                                
                                             // avatar={<Avatar src={item} shape="square" size={48} />}
                                             //avatar={ <Avatar src="https://zos.alipayobjects.com/rmsportal/ODTLcjxAfvqbxHnVXCYX.png" shape="square" size={10}/>}
                                             />
@@ -191,12 +194,14 @@ export default class FrontList extends Component {
                                                 </div>
                                             }
                                             </div>
-
+                                            <Divider style={{backgroundColor: "lightblue",margin: "75px 0px"}}/>
                                         </List.Item>
+                                        
                                     )}
                                 >
+                                   
                                     {this.state.loading && this.state.hasMore && (
-                                        <div className="demo-loading-container">
+                                    <div className="loading-container2">
                                             <Spin />
                                         </div>
                                     )}

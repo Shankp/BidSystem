@@ -1,9 +1,10 @@
 import react, { Component } from 'react';
 import { Col, Button, Form, FormGroup, Label, Input, FormText, Modal, ModalHeader, ModalBody, ModalFooter } from 'reactstrap';
-import { AddItemService } from '../../Services/ItemService';
+import { AddItemService,UploadImage } from '../../Services/ItemService';
 import Navbar from "../bar/navbar";
 import { withRouter } from 'react-router';
 import './AddItem.css';
+import ImageUploader from 'react-images-upload';
 
 var DatePicker = require("reactstrap-date-picker");
 
@@ -16,9 +17,12 @@ export class AddNewItem extends Component {
             moreDetails: '',
             expireTime: '',
             startingBid: '',
-            modal: true
+            modal: true,
+            pictures: [],
+            image:null
         };
         this.toggle = this.toggle.bind(this);
+        this.onDrop = this.onDrop.bind(this);
     }
     toggle() {
         // this.setState({
@@ -33,22 +37,31 @@ export class AddNewItem extends Component {
 
     }
     handleTitle(text) {
-        this.setState({ title: text.target.value });       
+        this.setState({ title: text.target.value });
     }
     handleSubTitle(text) {
-        this.setState({ subTitle: text.target.value });       
+        this.setState({ subTitle: text.target.value });
     }
     handleInfo(text) {
-        this.setState({ moreDetails: text.target.value });       
+        this.setState({ moreDetails: text.target.value });
     }
-    handleExpireDate(date) {        
+    handleExpireDate(date) {
         this.setState({ expireTime: date });
     }
     handleStartingBid(text) {
         this.setState({ startingBid: text.target.value });
         console.log(text.target.value);
     }
-
+    onDrop(picture) {
+        console.log(picture);
+        // this.setState({
+        //     pictures: this.state.pictures.concat(picture),
+        // });
+        this.setState({
+            image: picture
+        });
+       
+    }
     saveItem = async (e) => {
         e.preventDefault();
 
@@ -58,9 +71,10 @@ export class AddNewItem extends Component {
             moreDetails: this.state.moreDetails,
             expireTime: this.state.expireTime,
             startingBid: this.state.startingBid,
-            itemStatus: 1
+            itemStatus: 1,
+            image:this.state.pictures
         }
-        
+
         try {
             var userInfo = await AddItemService(itemParams);
             if (userInfo != null) {
@@ -70,6 +84,8 @@ export class AddNewItem extends Component {
                 // });
                 console.log(userInfo)
             }
+
+            var imageUpload = await UploadImage(this.state.image);//,"testFIle");
             this.sendData(this.state.modal);
 
         } catch (error) {
@@ -109,7 +125,7 @@ export class AddNewItem extends Component {
                             <FormGroup row>
                                 <Label for="ExDate" sm={2}>Expiration Date:</Label>
                                 <Col sm={10}>
-                                    <DatePicker dateFormat="MM/DD/YYYY" value = {this.state.expireTime} onChange={(date) => { this.handleExpireDate(date) }} />
+                                    <DatePicker dateFormat="MM/DD/YYYY" value={this.state.expireTime} onChange={(date) => { this.handleExpireDate(date) }} />
                                 </Col>
                             </FormGroup>
                             <FormGroup row>
@@ -117,6 +133,17 @@ export class AddNewItem extends Component {
                                 <Col sm={10}>
                                     <Input type="number" name="startingBid" id="startingBid" onChange={(text) => { this.handleStartingBid(text) }} />
                                 </Col>
+                            </FormGroup>
+                            <FormGroup row>
+                                <ImageUploader
+                                    withIcon={true}
+                                    buttonText='Choose images'
+                                    onChange={this.onDrop}
+                                    imgExtension={['.jpg', '.gif', '.png', '.gif']}
+                                    maxFileSize={5242880}
+                                />
+                                {/* <Input type="image" onChange={(text) => {this.onDrop(text) }} />
+                             */}
                             </FormGroup>
                             <Button >Submit</Button>
                         </Form>
