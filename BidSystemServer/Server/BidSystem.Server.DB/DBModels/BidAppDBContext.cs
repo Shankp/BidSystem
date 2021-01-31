@@ -20,7 +20,6 @@ namespace BidSystem.Server.DB.DBModels
         public virtual DbSet<Bid> Bids { get; set; }
         public virtual DbSet<BidUser> BidUsers { get; set; }
         public virtual DbSet<Item> Items { get; set; }
-        public virtual DbSet<UserDetail> UserDetails { get; set; }
         public virtual DbSet<UserType> UserTypes { get; set; }
 
         protected override void OnConfiguring(DbContextOptionsBuilder optionsBuilder)
@@ -40,27 +39,29 @@ namespace BidSystem.Server.DB.DBModels
             {
                 entity.ToTable("Bid");
 
-                entity.Property(e => e.ExpireTime).HasColumnType("datetime");
-
                 entity.HasOne(d => d.Item)
                     .WithMany(p => p.Bids)
                     .HasForeignKey(d => d.ItemId)
                     .OnDelete(DeleteBehavior.ClientSetNull)
-                    .HasConstraintName("FK__Bid__ItemId__2D27B809");
+                    .HasConstraintName("FK__Bid__ItemId__03F0984C");
 
                 entity.HasOne(d => d.User)
                     .WithMany(p => p.Bids)
                     .HasForeignKey(d => d.UserId)
                     .OnDelete(DeleteBehavior.ClientSetNull)
-                    .HasConstraintName("FK__Bid__UserId__2E1BDC42");
+                    .HasConstraintName("FK__Bid__UserId__04E4BC85");
             });
 
             modelBuilder.Entity<BidUser>(entity =>
             {
                 entity.HasKey(e => e.UserId)
-                    .HasName("PK__BidUser__1788CC4C1238FDE6");
+                    .HasName("PK__BidUser__1788CC4CEFB2906F");
 
                 entity.ToTable("BidUser");
+
+                entity.Property(e => e.Dob)
+                    .HasColumnType("datetime")
+                    .HasColumnName("DOB");
 
                 entity.Property(e => e.Email)
                     .IsRequired()
@@ -69,29 +70,37 @@ namespace BidSystem.Server.DB.DBModels
 
                 entity.Property(e => e.PasswordHash)
                     .IsRequired()
-                    .HasMaxLength(500)
-                    .IsFixedLength(true);
+                    .HasMaxLength(500);
 
                 entity.Property(e => e.PasswordSalt)
                     .IsRequired()
-                    .HasMaxLength(500)
-                    .IsFixedLength(true);
+                    .HasMaxLength(500);
 
-                entity.HasOne(d => d.UserDetailNavigation)
-                    .WithMany(p => p.BidUsers)
-                    .HasForeignKey(d => d.UserDetail)
-                    .HasConstraintName("FK__BidUser__UserDet__2A4B4B5E");
+                entity.Property(e => e.UserAddress)
+                    .HasMaxLength(250)
+                    .IsUnicode(false);
+
+                entity.Property(e => e.UserDescription)
+                    .HasMaxLength(500)
+                    .IsUnicode(false);
+
+                entity.Property(e => e.UserName)
+                    .IsRequired()
+                    .HasMaxLength(250)
+                    .IsUnicode(false);
 
                 entity.HasOne(d => d.UserTypeNavigation)
                     .WithMany(p => p.BidUsers)
                     .HasForeignKey(d => d.UserType)
                     .OnDelete(DeleteBehavior.ClientSetNull)
-                    .HasConstraintName("FK__BidUser__UserTyp__29572725");
+                    .HasConstraintName("FK__BidUser__UserTyp__01142BA1");
             });
 
             modelBuilder.Entity<Item>(entity =>
             {
                 entity.ToTable("Item");
+
+                entity.Property(e => e.ExpireTime).HasColumnType("datetime");
 
                 entity.Property(e => e.ImagePath)
                     .HasMaxLength(500)
@@ -106,28 +115,6 @@ namespace BidSystem.Server.DB.DBModels
                     .IsUnicode(false);
 
                 entity.Property(e => e.ItemTitle)
-                    .IsRequired()
-                    .HasMaxLength(250)
-                    .IsUnicode(false);
-            });
-
-            modelBuilder.Entity<UserDetail>(entity =>
-            {
-                entity.ToTable("UserDetail");
-
-                entity.Property(e => e.Addess)
-                    .HasMaxLength(250)
-                    .IsUnicode(false);
-
-                entity.Property(e => e.Dob)
-                    .HasColumnType("datetime")
-                    .HasColumnName("DOB");
-
-                entity.Property(e => e.UserDescription)
-                    .HasMaxLength(500)
-                    .IsUnicode(false);
-
-                entity.Property(e => e.UserName)
                     .IsRequired()
                     .HasMaxLength(250)
                     .IsUnicode(false);

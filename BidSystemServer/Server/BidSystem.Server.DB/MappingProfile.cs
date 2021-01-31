@@ -15,6 +15,7 @@ namespace BidSystem.Server.DB
             CreateMap<UserType, UserRole>().ReverseMap();
             CreateMap<BidUser, User>().ReverseMap();
             CreateMap<Item, BidItem>().ReverseMap();
+            CreateMap<Bid, BidObj>().ReverseMap();
         }
     }
 }

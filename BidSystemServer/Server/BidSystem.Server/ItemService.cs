@@ -26,8 +26,9 @@ namespace BidSystem.Server
 
         public List<BidItem> FilterItemsByStatus(string itemStatus)
         {
-            var status = (int)Enum.Parse(typeof(ItemStatus), itemStatus); ;
-            return m_itemStore.FilterItemsByStatus(status).Result;
+            string[] statusList = itemStatus?.Split(",");
+            //var status = (int)Enum.Parse(typeof(ItemStatus), itemStatus); ;
+            return m_itemStore.FilterItemsByStatus(statusList).Result;
         }
 
         public List<BidItem> GetAllActiveItems()
