@@ -1,9 +1,11 @@
 ﻿using AutoMapper;
 using BidSystem.Common;
+using BidSystem.Common.Models;
 using BidSystem.Server.DB.DBModels;
 using BidSystem.Server.Interface;
 using System;
 using System.Collections.Generic;
+using System.Linq;
 using System.Text;
 
 namespace BidSystem.Server.DB
@@ -17,6 +19,34 @@ namespace BidSystem.Server.DB
             m_mapper = mapper;
             m_context = context;
         }
+
+        public  User GetUserByEmail(string email)
+        {
+            try
+            {
+                var user = m_context.BidUsers.Where(c => c.Email.Equals(email)).FirstOrDefault();
+                if (user != null)
+                {
+                    return m_mapper.Map<User>(user);
+                }
+                //log user unavailability
+                return null;
+            }
+            catch (Exception)
+            {
+
+                throw;
+            }
+            
+           
+        }
+
+        public int GetUserTypeByid(int userId)
+        {
+            var userType = m_context.BidUsers.Where(c => c.UserId == userId).FirstOrDefault();
+            return userType.UserType;
+        }
+
         public List<UserRole> GetUsetTypes()
         {
             try

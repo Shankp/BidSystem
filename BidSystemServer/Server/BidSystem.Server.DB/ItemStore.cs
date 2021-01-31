@@ -43,10 +43,16 @@ namespace BidSystem.Server.DB
             return true;
         }
 
-        public async Task<List<BidItem>> FilterItemsByStatus(int itemStatus)
+        public async Task<List<BidItem>> FilterItemsByStatus(string[] itemStatus)
         {
-            var itemList = await m_context.Items.Where(c => c.ItemStatus == itemStatus).ToListAsync();
-            return m_mapper.Map<List<BidItem>>(itemList);
+            var list = new List<Item>();
+            foreach (var st in itemStatus)
+            {
+                var item = await m_context.Items.Where(c => c.ItemStatus == Convert.ToInt32(st)).ToListAsync();
+                list.AddRange(item);
+            }
+            //var itemList = await m_context.Items.Where(c => c.ItemStatus == itemStatus).ToListAsync();
+            return m_mapper.Map<List<BidItem>>(list);
         }
 
         public async Task<List<BidItem>> GetAllActiveItems()

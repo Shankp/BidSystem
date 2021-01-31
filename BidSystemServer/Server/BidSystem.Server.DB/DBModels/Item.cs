@@ -18,8 +18,9 @@ namespace BidSystem.Server.DB.DBModels
         public string ItemDescription { get; set; }
         public string ImagePath { get; set; }
         public int ItemStatus { get; set; }
-        public int? MaxBidValue { get; set; }
-        public bool IsDeleted { get; set; }
+        public DateTime? ExpireTime { get; set; }
+        public int StartingBid { get; set; }
+        public bool? IsDeleted { get; set; }
 
         public virtual ICollection<Bid> Bids { get; set; }
     }

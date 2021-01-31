@@ -1,11 +1,11 @@
 ﻿using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Threading.Tasks;
+using System.IO;
 using BidSystem.Common.Interface;
 using BidSystem.Common.Models;
+using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Mvc;
+
 
 namespace BidSystem.AspNet.Controllers
 {
@@ -19,6 +19,7 @@ namespace BidSystem.AspNet.Controllers
             m_itemService = itemService;
         }
 
+        [Authorize]
         [HttpPost, Route("AddItem")]
         public ActionResult AddNewitem([FromBody]BidItem item)
         {
@@ -32,8 +33,10 @@ namespace BidSystem.AspNet.Controllers
             }
         }
 
+        [Authorize]
         [HttpGet, Route("GetItemById")]
         public ActionResult GetItemById([FromQuery]int itemId)
+        
         {
             try
             {
@@ -45,19 +48,26 @@ namespace BidSystem.AspNet.Controllers
             }
         }
 
+        [Authorize]
         [HttpGet, Route("GetItemListByStatus")]
         public ActionResult FilterItemByStatus([FromQuery]string itemStatus)
         {
             try
             {
-               return Ok(m_itemService.FilterItemsByStatus(itemStatus));
+                if (!string.IsNullOrEmpty(itemStatus))
+                {
+                    return Ok(m_itemService.FilterItemsByStatus(itemStatus));
+                }
+                return BadRequest("Empty or null received as status param");
+
             }
             catch (Exception e)
             {
-                throw;
+                return StatusCode(500, "Something went wrong when logging");
             }
         }
 
+        [Authorize]
         [HttpPost, Route("UpdateItem")]
         public ActionResult UpdateItem([FromBody]BidItem item)
         {
@@ -71,8 +81,8 @@ namespace BidSystem.AspNet.Controllers
             }
         }
 
-        [HttpGet, Route("GetAllItem")]
-        public ActionResult GetAllBidItem()
+        [HttpGet, Route("GetAllActiveItems")]
+        public ActionResult GetAllActiveBidItem()
         {
             try
             {
@@ -96,6 +106,8 @@ namespace BidSystem.AspNet.Controllers
                 throw;
             }
         }
+
+        [Authorize]
         [HttpDelete, Route("Deleteitem")]
         public ActionResult DeleteItem([FromQuery]int itemId)
         {
@@ -109,6 +121,28 @@ namespace BidSystem.AspNet.Controllers
             }
         }
 
+        [Authorize]
+        [HttpPost, Route("UploadItem")]
+        public ActionResult Post([FromForm] FileModel file)
+        {
+            try
+            {
+                //var postedFile = Request.Form.Files[0];
+                string path = Path.Combine(Directory.GetCurrentDirectory(), "wwwroot", file.FileName);
 
+                using (Stream stream = new FileStream(path, FileMode.Create))
+                {
+                    //file.FormFile.CopyTo(stream);
+                }
+
+                return StatusCode(StatusCodes.Status201Created);
+            }
+            catch (Exception e)
+            {
+                return StatusCode(StatusCodes.Status500InternalServerError);
+            }
+        }
     }
+
+
 }
