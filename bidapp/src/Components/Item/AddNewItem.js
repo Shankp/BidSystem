@@ -1,12 +1,9 @@
-import react, { Component } from 'react';
-import { Col, Button, Form, FormGroup, Label, Input, FormText, Modal, ModalHeader, ModalBody, ModalFooter } from 'reactstrap';
-import { AddItemService, UploadImage, GetItemsById ,UpdateItemService } from '../../Services/ItemService';
-import Navbar from "../bar/navbar";
-import { withRouter } from 'react-router';
+import { Component } from 'react';
+import { Col, Button, Form, FormGroup, Label, Input, Modal, ModalHeader, ModalBody, ModalFooter } from 'reactstrap';
+import { AddItemService, GetItemsById ,UpdateItemService } from '../../Services/ItemService';
 import './AddItem.css';
 import ImageUploader from 'react-images-upload';
-import Dropdown from 'react-dropdown';
-//import itemStatusForAdmin from "./../../models/ItemStatusType";
+
 import Select from 'react-select'
 
 var DatePicker = require("reactstrap-date-picker");
@@ -32,30 +29,13 @@ export class AddNewItem extends Component {
         this.toggle = this.toggle.bind(this);
         this.onDrop = this.onDrop.bind(this);
         this.loadItemDetails = this.loadItemDetails.bind(this);
-
     }
 
+    componentDidMount() {  
 
-
-    componentDidMount() {
-
-        // this.setState((state, props) => ({
-        //     isUpdate:this.props.isUpdate , itemId: this.props.itemId
-        //   }));
-
-        this.setState({ isUpdate: this.props.isUpdate, itemId: this.props.itemId }, () => {
-            console.log(this.state.updateItemId, 'dealersOverallTotal1');
+        this.setState({ isUpdate: this.props.isUpdate, itemId: this.props.itemId }, () => {           
             this.loadItemDetails(this.state.itemId);
-        });
-
-
-        //   console.log(this.props.isUpdate)
-        //   console.log(this.state.itemId)
-
-        // this.setState({ isUpdate: this.props.isUpdate, itemId: this.props.itemId });
-        // if (this.state.isupdate) {
-        //     this.loadItemDetails(this.state.itemId);
-        // }
+        });     
     }
 
     loadItemDetails = async (itemId) => {
@@ -71,10 +51,7 @@ export class AddNewItem extends Component {
         });
 
     }
-    toggle() {
-        // this.setState({
-        //     modal: !this.state.modal
-        // });
+    toggle() {        
         this.sendData(this.state.modal);
     }
 
@@ -206,10 +183,7 @@ export class AddNewItem extends Component {
 
                 </ModalHeader>
                 <ModalBody>
-                    <div className="form-page">
-                        {/* <div>
-                    <Navbar />
-                </div> */}
+                    <div className="form-page">                      
                         <Form onSubmit={this.saveItem}>
                             <FormGroup row>
                                 <Label for="title" sm={2}>Title:</Label>
@@ -274,9 +248,9 @@ export class AddNewItem extends Component {
                             }
                             {this.state.isUpdate
                                 ?
-                                <Button >Update</Button>
+                                <Button >Update Item</Button>
                                 :
-                                <Button >Submit</Button>
+                                <Button >Save Item</Button>
                             }
 
                         </Form>
@@ -291,4 +265,3 @@ export class AddNewItem extends Component {
     }
 }
 export default AddNewItem;
-//export default withRouter(AddNewItem)

@@ -45,20 +45,39 @@ namespace BidSystem.Server.DB
 
         public async Task<List<BidItem>> FilterItemsByStatus(string[] itemStatus)
         {
-            var list = new List<Item>();
+            List<BidItem> list = new List<BidItem>();
             foreach (var st in itemStatus)
             {
-                var item = await m_context.Items.Where(c => c.ItemStatus == Convert.ToInt32(st)).ToListAsync();
-                list.AddRange(item);
+                var itemList = await m_context.Items.Where(c => c.ItemStatus == Convert.ToInt32(st)).ToListAsync();
+                var Convertedlist = m_mapper.Map<List<BidItem>>(itemList);
+                if (Convert.ToInt32(st) == (int)ItemStatus.ACTIVE)
+                {
+                    foreach (var item in Convertedlist)
+                    {
+                        var bidItems = await m_context.Bids.Where(c => c.ItemId == item.ItemId).ToListAsync();
+                        if (bidItems.Count != 0)
+                            item.MaxBidValue = bidItems.Max(c => c.BidValue);
+                    }
+                }
+                list.AddRange(Convertedlist);
             }
             //var itemList = await m_context.Items.Where(c => c.ItemStatus == itemStatus).ToListAsync();
-            return m_mapper.Map<List<BidItem>>(list);
+            return list;
         }
 
         public async Task<List<BidItem>> GetAllActiveItems()
         {
             var itemList = await m_context.Items.Where(c => c.ItemStatus == (int)ItemStatus.ACTIVE).ToListAsync();
-            return m_mapper.Map<List<BidItem>>(itemList);
+            var resultList = m_mapper.Map<List<BidItem>>(itemList);
+
+            foreach (var item in resultList)
+            {
+                var bidItems = await m_context.Bids.Where(c => c.ItemId == item.ItemId).ToListAsync();
+                if (bidItems.Count != 0)
+                    item.MaxBidValue = bidItems.Max(c => c.BidValue);
+
+            }
+            return resultList;
         }
 
         public async Task<BidItem> GetItemByItemId(int itemId)

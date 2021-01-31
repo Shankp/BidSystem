@@ -5,7 +5,7 @@ using BidSystem.Common.Models;
 using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Mvc;
-
+using Microsoft.Extensions.Logging;
 
 namespace BidSystem.AspNet.Controllers
 {
@@ -14,9 +14,11 @@ namespace BidSystem.AspNet.Controllers
     public class ItemController : ControllerBase
     {
         public IItemService m_itemService;
-        public ItemController(IItemService itemService)
+        private readonly ILogger s_log;
+        public ItemController(IItemService itemService, ILogger<AccountController> loggerController)
         {
             m_itemService = itemService;
+            s_log = loggerController;
         }
 
         [Authorize]
@@ -29,7 +31,8 @@ namespace BidSystem.AspNet.Controllers
             }
             catch (Exception e)
             {
-                throw;
+                s_log.LogError("Adding new item Failed", e);
+                return StatusCode(StatusCodes.Status500InternalServerError);
             }
         }
 
@@ -44,7 +47,8 @@ namespace BidSystem.AspNet.Controllers
             }
             catch (Exception e)
             {
-                throw;
+                s_log.LogError("Get item By id Failed", e);
+                return StatusCode(StatusCodes.Status500InternalServerError);
             }
         }
 
@@ -63,7 +67,8 @@ namespace BidSystem.AspNet.Controllers
             }
             catch (Exception e)
             {
-                return StatusCode(500, "Something went wrong when logging");
+                s_log.LogError("GetItemListByStatus Failed", e);
+                return StatusCode(500, "Something went wrong when filtering item list by status");
             }
         }
 
@@ -77,7 +82,8 @@ namespace BidSystem.AspNet.Controllers
             }
             catch (Exception e)
             {
-                throw;
+                s_log.LogError("Updating Item Failed", e);
+                return StatusCode(StatusCodes.Status500InternalServerError);
             }
         }
 
@@ -90,7 +96,8 @@ namespace BidSystem.AspNet.Controllers
             }
             catch (Exception e)
             {
-                throw;
+                s_log.LogError("Get All Active Items Failed", e);
+                return StatusCode(StatusCodes.Status500InternalServerError);
             }
         }
 
@@ -103,7 +110,8 @@ namespace BidSystem.AspNet.Controllers
             }
             catch (Exception e)
             {
-                throw;
+                s_log.LogError("GetItemListBidByMe Failed", e);
+                return StatusCode(StatusCodes.Status500InternalServerError);
             }
         }
 
@@ -117,13 +125,14 @@ namespace BidSystem.AspNet.Controllers
             }
             catch (Exception e)
             {
-                throw;
+                s_log.LogError("DeleteItem Failed", e);
+                return StatusCode(StatusCodes.Status500InternalServerError);
             }
         }
 
         [Authorize]
         [HttpPost, Route("UploadItem")]
-        public ActionResult Post([FromForm] FileModel file)
+        public ActionResult PostUploadItem([FromForm] FileModel file)
         {
             try
             {
@@ -139,6 +148,7 @@ namespace BidSystem.AspNet.Controllers
             }
             catch (Exception e)
             {
+                s_log.LogError("UploadItem Failed", e);
                 return StatusCode(StatusCodes.Status500InternalServerError);
             }
         }

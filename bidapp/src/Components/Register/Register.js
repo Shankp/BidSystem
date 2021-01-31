@@ -104,7 +104,7 @@ export default class Register extends Component {
                             <Input type="textarea" name="address" id="address" onChange={(text) => { this.handleAddress(text) }}/>
                         </Col>
                     </FormGroup>
-                    <Button>Submit</Button>
+                    <Button  className="boto-btn">Sign Up</Button>
                 </Form>
             </div>
         );

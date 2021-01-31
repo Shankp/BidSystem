@@ -58,11 +58,11 @@ class Navbar extends Component {
 
   goToAddItem = () => {
     this.setState({ addItemModalShow: true })
-    //console.log(this.state.addItemModalShow)
+
   }
 
   handleOnHide(closeModal) {
-    //console.log(closeModal)
+
     this.setState({
       addItemModalShow: false
     })
@@ -70,39 +70,12 @@ class Navbar extends Component {
 
 
   render() {
-    // const isLoggedIn = this.state.isLoggedin;
-    // console.log(isLoggedIn)
-    // let nav;
-    // if (isLoggedIn.data) {
-    //   nav = <ul className="navbar-nav ml-auto">
-    //     <li className="nav-item">
-
-    //       <button onClick={this.Logout}>Sign out</button>
-    //       {/* <div className="nav-link"> </div> */}
-    //       {/* <Link className="nav-link" to={"/LogOut"}>Sign Out</Link> */}
-    //     </li>
-    //   </ul>;
-    // }
-    // else {
-
-    //   nav = <ul className="navbar-nav ml-auto">
-    //     <li className="nav-item">
-    //       <Link className="nav-link" to={"/Login"}>Sign in</Link>
-    //     </li>
-    //     <li className="nav-item">
-    //       <Link className="nav-link" to={"/Register"}>Sign up</Link>
-    //     </li>
-    //   </ul>;
-    // }
-
-
     return (
       <div style={{ margin: '10px' }}>
         <nav className="navbar navbar-expand-lg navbar-light fixed-top">
           <div className="container">
             <Link className="navbar-brand" to={"/"}>BidExpress</Link>
             <div className="collapse navbar-collapse">
-              {/* {nav} */}
               {
                 this.state.isLoggedin.data ?
                   <ul className="navbar-nav ml-auto">
@@ -112,11 +85,8 @@ class Navbar extends Component {
                           <button className="btn-style" onClick={this.goToAddItem}>Add New Item </button> :
                           <div></div>
                       }
-                      {/* <button className="btn-style" onClick={this.goToAddItem}>Add New Item </button> */}
-                      {/* <Link className="nav-link" to={"/AddItem"}>Add New</Link> */}
                       <button onClick={this.logout}>Sign out</button>
-                      {/* <div className="nav-link"> </div> */}
-                      {/* <Link className="nav-link" to={"/LogOut"}>Sign Out</Link> */}
+
                     </li>
                   </ul>
                   :
@@ -128,24 +98,10 @@ class Navbar extends Component {
                       <Link className="nav-link" to={"/Register"}>Sign up</Link>
                     </li>
                   </ul>
-
-
               }
-              {/* <ul className="navbar-nav ml-auto">
-              <li className="nav-item">
-                <Link className="nav-link" to={"/Login"}>Sign in</Link>
-              </li>
-              <li className="nav-item">
-                <Link className="nav-link" to={"/Register"}>Sign up</Link>
-              </li>
-              <li className="nav-item">
-                <Link className="nav-link" to={"/LogOut"}>Sign Out</Link>
-              </li>
-            </ul> */}
             </div>
           </div>
         </nav>
-
 
         {this.state.addItemModalShow ? <AddNewItem
           show={this.state.addTagsModalShow}

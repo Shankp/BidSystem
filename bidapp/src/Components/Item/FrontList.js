@@ -1,21 +1,14 @@
-import react, { Component } from 'react';
+import { Component } from 'react';
 import Navbar from "../bar/navbar";
-import { makeStyles } from '@material-ui/core/styles';
-//import List from '@material-ui/core/List';
-import ListItem from '@material-ui/core/ListItem';
-import ListItemText from '@material-ui/core/ListItemText';
-import ListSubheader from '@material-ui/core/ListSubheader';
-import { List, message, Avatar, Spin } from 'antd';
+import { List, Spin } from 'antd';
 import InfiniteScroll from 'react-infinite-scroller';
 
 import { GetAllActiveItems, GetItemsByStatus } from '../../Services/ItemService'
 import { UserValidate, GetUserType } from '../../Services/AuthService'
 import { AddNewbid } from '../../Services/BidService'
-import { Container } from '@material-ui/core';
 import { NotificationManager } from 'react-notifications';
 import './FrontList.css';
 import 'react-notifications/lib/notifications.css';
-import { Button, Label, Input, Form, Toast, ToastBody, ToastHeader } from 'reactstrap';
 import itemStatus from "./../../models/ItemStatusType";
 import Divider from '@material-ui/core/Divider';
 import { AddNewItem } from '../Item/AddNewItem';
@@ -33,21 +26,18 @@ export default class FrontList extends Component {
             show: true,
             userType: null,
             addItemModalShow: false,
-            isUpdate:false,
-            updateItemId:null
+            isUpdate: false,
+            updateItemId: null
 
         }
         this.isLoggedOnUser = this.isLoggedOnUser.bind(this);
         this.getUserType = this.getUserType.bind(this);
         this.handleOnHide = this.handleOnHide.bind(this);
-        //this.goToEditItem = this.goToEditItem.bind(this);
-        //this.getAllItems();
     }
 
 
     async componentDidUpdate() {
-        //this.getAllItems();
-       // await this.getAllItems();
+
     }
 
     async componentDidMount() {
@@ -67,7 +57,6 @@ export default class FrontList extends Component {
 
     getAllItems = async () => {
         try {
-            //var statusList = itemStatus.NEW  + "," +  itemStatus.ACTIVE ;
             console.log(this.state.userType)
             let itemList;
             if (this.state.userType == 1) {
@@ -75,13 +64,11 @@ export default class FrontList extends Component {
                 itemList = await GetItemsByStatus(statusList);
             }
             else if (this.state.userType == 2) {
-                var statusList = itemStatus.NEW;
+                var statusList = itemStatus.ACTIVE;
                 itemList = await GetItemsByStatus(statusList);
             } else {
                 itemList = await GetAllActiveItems();
             }
-
-            //var itemList = await GetItemsByStatus(statusList);
 
             this.setState({ data: itemList.data, loading: true });
             console.log(this.state.data);
@@ -91,12 +78,11 @@ export default class FrontList extends Component {
         }
     }
 
-    handleOnHide(closeModal) {
-        //console.log(closeModal)
+    handleOnHide() {
         this.setState({
-          addItemModalShow: false
+            addItemModalShow: false
         })
-      }
+    }
 
     addNewBid = async (val, title) => {
 
@@ -135,47 +121,20 @@ export default class FrontList extends Component {
     }
 
     goToEditItem = async (itemId) => {
-       // let answer = itemId;
-        console.log(itemId)
-        // if (this.prevstate.itemId === itemId) {
-        //     answer = this.state.v1 + this.state.xxxxx;
-        //     console.log("and the answer is :" + answer);
-        // }
-        this.setState({ 
+        this.setState({
             addItemModalShow: true,
-            isUpdate:true
-            //updateItemId:itemId
-         })
-         this.setState({ updateItemId:itemId }, () => {
+            isUpdate: true
+        });
+        this.setState({ updateItemId: itemId }, () => {
             console.log(this.state.updateItemId, 'dealersOverallTotal1');
-          }); 
+        });
         console.log(this.state.updateItemId)
-      }
-
-    //   deAnswer = () => {
-    //     let answer = 0;
-    //     if (this.state.isCal === "add") {
-    //         answer = this.state.v1 + this.state.xxxxx;
-    //         console.log("and the answer is :" + answer);
-    //     }
-    
-    //     this.setState({
-    //         v2: this.state.v1,
-    //         answer: answer,
-    //     })
-    // }
+    }
 
     render() {
 
-        // const isLoggedIn = this.state.isUserLogged;
-        // console.log(isLoggedIn)
-        // let button;
-        // if (isLoggedIn.data) {
-        //     button = <div><button onClick={(val)=>this.addNewBid(val)} >Add bid</button> <input type="text" onChange={(text) => this.handleBidVlaue(text)} /></div>;
-        // }
         return (
             <div >
-
                 <div>
                     <Navbar />
                 </div>
@@ -200,7 +159,6 @@ export default class FrontList extends Component {
                                 useWindow={false}
                             >
                                 <List
-
                                     dataSource={this.state.data}
                                     itemLayout="vertical"
                                     renderItem={item => (
@@ -209,13 +167,17 @@ export default class FrontList extends Component {
                                                 title={item.itemTitle}
                                                 description={item.itemSubTitle}
 
-                                            // avatar={<Avatar src={item} shape="square" size={48} />}
-                                            //avatar={ <Avatar src="https://zos.alipayobjects.com/rmsportal/ODTLcjxAfvqbxHnVXCYX.png" shape="square" size={10}/>}
                                             />
-                                            <div>{item.itemDescription}</div>
-                                            {/* <div>Bidding status : {itemStatus[item.itemStatus]} </div> */}
-                                            <div>Bidding status : {item.itemStatus} </div>
-                                            {/* <div>{button} </div> */}
+                                            <div>
+                                                {item.itemDescription}
+                                            </div>
+                                            {
+                                                item.maxBidValue != 0 ?
+                                                    <div> Highest Bid :(LKR) {item.maxBidValue}</div> :
+                                                    <div></div>
+                                            }
+
+
                                             <div>{this.state.isUserLogged ?
                                                 <div>
                                                     {this.state.userType == 2 && this.state.userType != null ?
@@ -225,12 +187,16 @@ export default class FrontList extends Component {
                                                         </div>
                                                         :
                                                         <div>
-                                                            <button onClick={() =>this.goToEditItem(item.itemId)} >Edit bid</button>
+                                                            {
+                                                                item.itemStatus == 1 ?
+                                                                    <div>Status : New</div>
+                                                                    :
+                                                                    <div>Status : Active</div>
+                                                            }
+                                                            <button onClick={() => this.goToEditItem(item.itemId)} >Edit bid</button>
                                                         </div>
                                                     }
 
-                                                    {/* <button onClick={() => this.addNewBid(item.itemId, item.itemTitle)} >Add bid</button>
-                                        <input type="number" name="bidValue" onChange={(text) => this.handleBidVlaue(text)} /> */}
                                                     {/* <Toast  show={this.state.show} delay={100} autohide>
                                             <ToastHeader>
                                                 Reactstrap
@@ -263,9 +229,9 @@ export default class FrontList extends Component {
                 {this.state.addItemModalShow ? <AddNewItem
                     show={this.state.addItemModalShow}
                     isUpdate {...this.state.isUpdate}
-                    onHide={this.handleOnHide} 
-                    itemId = {this.state.updateItemId}
-                   /> : null}
+                    onHide={this.handleOnHide}
+                    itemId={this.state.updateItemId}
+                /> : null}
             </div>
         );
     }

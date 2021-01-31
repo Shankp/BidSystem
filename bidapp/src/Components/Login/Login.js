@@ -3,7 +3,6 @@ import { Button, Label, Input, Form } from 'reactstrap';
 import './Login.css';
 import { LoginService } from '../../Services/AuthService'
 import Navbar from "../bar/navbar";
-//import {Cookies } from "react-cookie";
 import { withRouter } from 'react-router';
 
 
@@ -52,7 +51,6 @@ class Login extends Component {
                 // d.setTime(d.getTime() + (24 * 60 * 1000));
                 // console.log(d)
                 // Cookies.set("logonToken", userInfo.data.token, {expires: d });
-
                 // Cookies.get("logonToken").then((cookie) => {
                 //     console.log(cookie);
                 //  });

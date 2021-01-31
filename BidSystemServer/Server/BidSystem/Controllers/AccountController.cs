@@ -95,7 +95,8 @@ namespace BidSystem.AspNet.Controllers
             }
             catch (Exception e)
             {
-                throw;
+                s_log.LogError("GetAllUserTypes Failed", e);
+                return StatusCode(StatusCodes.Status500InternalServerError);
             }
 
         }
@@ -112,7 +113,8 @@ namespace BidSystem.AspNet.Controllers
             }
             catch (Exception e)
             {
-                throw;
+                s_log.LogError("GetUserType Failed", e);
+                return StatusCode(StatusCodes.Status500InternalServerError);
             }
 
         }
@@ -127,7 +129,8 @@ namespace BidSystem.AspNet.Controllers
             }
             catch (Exception e)
             {
-                throw;
+                s_log.LogError("UserValidate Failed", e);
+                return StatusCode(StatusCodes.Status500InternalServerError);
             }
 
         }
