@@ -6,7 +6,7 @@
 
 2. Open the `BidSystemServer` folder and open the solution(BidSystem.sln) by Visual studion 2019.
 
-3. Run the `DBScript.sql` file(location : ) in sql server to create the database.
+3. Run the `DBScript.sql` file(https://github.com/Shankp/BidSystem/blob/main/Docs/DBScript.sql ) in sql server to create the database.
 
 4. Change the DB source in appsetting.development.json file inside the `BidSystem.AspNet` project (https://github.com/Shankp/BidSystem/blob/main/BidSystemServer/Server/BidSystem/appsettings.Development.json)
 
