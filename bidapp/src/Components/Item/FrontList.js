@@ -18,6 +18,7 @@ import 'react-notifications/lib/notifications.css';
 import { Button, Label, Input, Form, Toast, ToastBody, ToastHeader } from 'reactstrap';
 import itemStatus from "./../../models/ItemStatusType";
 import Divider from '@material-ui/core/Divider';
+import { AddNewItem } from '../Item/AddNewItem';
 
 export default class FrontList extends Component {
     constructor(props) {
@@ -30,17 +31,23 @@ export default class FrontList extends Component {
             isUserLogged: false,
             bidValue: 0,
             show: true,
-            userType: null
+            userType: null,
+            addItemModalShow: false,
+            isUpdate:false,
+            updateItemId:null
 
         }
         this.isLoggedOnUser = this.isLoggedOnUser.bind(this);
         this.getUserType = this.getUserType.bind(this);
+        this.handleOnHide = this.handleOnHide.bind(this);
+        //this.goToEditItem = this.goToEditItem.bind(this);
         //this.getAllItems();
     }
 
 
-    componentDidUpdate() {
+    async componentDidUpdate() {
         //this.getAllItems();
+       // await this.getAllItems();
     }
 
     async componentDidMount() {
@@ -70,12 +77,12 @@ export default class FrontList extends Component {
             else if (this.state.userType == 2) {
                 var statusList = itemStatus.NEW;
                 itemList = await GetItemsByStatus(statusList);
-            }else{
+            } else {
                 itemList = await GetAllActiveItems();
             }
 
             //var itemList = await GetItemsByStatus(statusList);
-           
+
             this.setState({ data: itemList.data, loading: true });
             console.log(this.state.data);
 
@@ -83,6 +90,13 @@ export default class FrontList extends Component {
 
         }
     }
+
+    handleOnHide(closeModal) {
+        //console.log(closeModal)
+        this.setState({
+          addItemModalShow: false
+        })
+      }
 
     addNewBid = async (val, title) => {
 
@@ -120,6 +134,37 @@ export default class FrontList extends Component {
         this.setState({ bidValue: text.target.value });
     }
 
+    goToEditItem = async (itemId) => {
+       // let answer = itemId;
+        console.log(itemId)
+        // if (this.prevstate.itemId === itemId) {
+        //     answer = this.state.v1 + this.state.xxxxx;
+        //     console.log("and the answer is :" + answer);
+        // }
+        this.setState({ 
+            addItemModalShow: true,
+            isUpdate:true
+            //updateItemId:itemId
+         })
+         this.setState({ updateItemId:itemId }, () => {
+            console.log(this.state.updateItemId, 'dealersOverallTotal1');
+          }); 
+        console.log(this.state.updateItemId)
+      }
+
+    //   deAnswer = () => {
+    //     let answer = 0;
+    //     if (this.state.isCal === "add") {
+    //         answer = this.state.v1 + this.state.xxxxx;
+    //         console.log("and the answer is :" + answer);
+    //     }
+    
+    //     this.setState({
+    //         v2: this.state.v1,
+    //         answer: answer,
+    //     })
+    // }
+
     render() {
 
         // const isLoggedIn = this.state.isUserLogged;
@@ -155,15 +200,15 @@ export default class FrontList extends Component {
                                 useWindow={false}
                             >
                                 <List
-                                
+
                                     dataSource={this.state.data}
                                     itemLayout="vertical"
                                     renderItem={item => (
                                         <List.Item key={item.itemId}>
                                             <List.Item.Meta
                                                 title={item.itemTitle}
-                                                description={item.itemSubTitle}                                               
-                                                
+                                                description={item.itemSubTitle}
+
                                             // avatar={<Avatar src={item} shape="square" size={48} />}
                                             //avatar={ <Avatar src="https://zos.alipayobjects.com/rmsportal/ODTLcjxAfvqbxHnVXCYX.png" shape="square" size={10}/>}
                                             />
@@ -176,9 +221,14 @@ export default class FrontList extends Component {
                                                     {this.state.userType == 2 && this.state.userType != null ?
                                                         <div>
                                                             <button onClick={() => this.addNewBid(item.itemId, item.itemTitle)} >Add bid</button>
-                                                            <input type="number" name="bidValue" onChange={(text) => this.handleBidVlaue(text)} /> </div> :
-                                                        <div></div>
+                                                            <input type="number" name="bidValue" onChange={(text) => this.handleBidVlaue(text)} />
+                                                        </div>
+                                                        :
+                                                        <div>
+                                                            <button onClick={() =>this.goToEditItem(item.itemId)} >Edit bid</button>
+                                                        </div>
                                                     }
+
                                                     {/* <button onClick={() => this.addNewBid(item.itemId, item.itemTitle)} >Add bid</button>
                                         <input type="number" name="bidValue" onChange={(text) => this.handleBidVlaue(text)} /> */}
                                                     {/* <Toast  show={this.state.show} delay={100} autohide>
@@ -189,19 +239,19 @@ export default class FrontList extends Component {
                                                 This is a toast on a white background — check it out!
                                                   </ToastBody>
                                         </Toast> */}
+
                                                 </div>
-                                                : <div>
-                                                </div>
+                                                : <div></div>
                                             }
                                             </div>
-                                            <Divider style={{backgroundColor: "lightblue",margin: "75px 0px"}}/>
+                                            <Divider style={{ backgroundColor: "lightblue", margin: "75px 0px" }} />
                                         </List.Item>
-                                        
+
                                     )}
                                 >
-                                   
+
                                     {this.state.loading && this.state.hasMore && (
-                                    <div className="loading-container2">
+                                        <div className="loading-container2">
                                             <Spin />
                                         </div>
                                     )}
@@ -210,7 +260,12 @@ export default class FrontList extends Component {
                         </div>
                     </div>
                 }
-
+                {this.state.addItemModalShow ? <AddNewItem
+                    show={this.state.addItemModalShow}
+                    isUpdate {...this.state.isUpdate}
+                    onHide={this.handleOnHide} 
+                    itemId = {this.state.updateItemId}
+                   /> : null}
             </div>
         );
     }

@@ -58,11 +58,11 @@ class Navbar extends Component {
 
   goToAddItem = () => {
     this.setState({ addItemModalShow: true })
-    console.log(this.state.addItemModalShow)
+    //console.log(this.state.addItemModalShow)
   }
 
   handleOnHide(closeModal) {
-    console.log(closeModal)
+    //console.log(closeModal)
     this.setState({
       addItemModalShow: false
     })

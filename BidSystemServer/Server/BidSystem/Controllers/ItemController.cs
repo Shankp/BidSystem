@@ -36,6 +36,7 @@ namespace BidSystem.AspNet.Controllers
         [Authorize]
         [HttpGet, Route("GetItemById")]
         public ActionResult GetItemById([FromQuery]int itemId)
+        
         {
             try
             {

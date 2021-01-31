@@ -18,9 +18,38 @@ export async function GetItemsByStatus(statusList) {
   return api.get(endpoint, config);
 }
 
+export async function GetItemsById(itemId) {
+  let config = {
+    headers: {},
+    params: {
+      itemId: itemId
+    },
+  };
+  const endpoint = `GetItemById`;
+  let api = await API();
+  return api.get(endpoint, config);
+}
+
 export async function AddItemService(template) {
   const endpoint = `AddItem`;
   let params = {
+    ItemTitle: template.title,
+    ItemSubTitle: template.subTitle,
+    ItemDescription: template.moreDetails,
+    ItemStatus: template.itemStatus,
+    ExpireTime: template.expireTime,
+    StartingBid: template.startingBid
+    //ImagePath:template.image
+  };
+  console.log(template);
+  let api = await API();
+  return api.post(endpoint, params);
+}
+
+export async function UpdateItemService(template) {
+  const endpoint = `UpdateItem`;
+  let params = {
+    ItemId:template.itemId,
     ItemTitle: template.title,
     ItemSubTitle: template.subTitle,
     ItemDescription: template.moreDetails,
