@@ -12,6 +12,8 @@ import 'react-notifications/lib/notifications.css';
 import itemStatus from "./../../models/ItemStatusType";
 import Divider from '@material-ui/core/Divider';
 import { AddNewItem } from '../Item/AddNewItem';
+import Countdown from "react-countdown";
+
 
 export default class FrontList extends Component {
     constructor(props) {
@@ -131,7 +133,24 @@ export default class FrontList extends Component {
         console.log(this.state.updateItemId)
     }
 
+
+
     render() {
+        const Completionist = () => <span>Item is no longer valid for bidding.</span>;
+
+        
+        const renderer = ({ days ,hours, minutes, seconds, completed }) => {
+            if (completed) {
+               
+                return <Completionist />;
+            } else {                
+                return (
+                    <span>
+                      {days} days {hours}h: {minutes}m: {seconds}s
+                    </span>
+                );
+            }
+        };
 
         return (
             <div >
@@ -209,6 +228,14 @@ export default class FrontList extends Component {
                                                 </div>
                                                 : <div></div>
                                             }
+                                            Valid within : 
+                                            {console.log(item.expireTime)}
+                                                <Countdown
+                                                    date={item.expireTime}
+                                                    intervalDelay={0}
+                                                    precision={3}
+                                                    renderer={renderer}
+                                                />
                                             </div>
                                             <Divider style={{ backgroundColor: "lightblue", margin: "75px 0px" }} />
                                         </List.Item>
